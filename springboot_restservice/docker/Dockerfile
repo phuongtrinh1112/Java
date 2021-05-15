@@ -1,4 +1,4 @@
-FROM docker.fortna.com/wes/app-jdk8-dev:10
+FROM <base>
 
 ARG JAR_FILE=target/rest-service-0.0.1-SNAPSHOT.jar
 ADD ${JAR_FILE} app.jar
