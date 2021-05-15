@@ -62,7 +62,7 @@ Sample RESTful API/Web Services
     ```
 - Create Dockerfile
     ```dockerfile
-    FROM docker.fortna.com/wes/app-jdk8-dev:10
+    FROM <base>
     
     ARG JAR_FILE=target/rest-service-0.0.1-SNAPSHOT.jar
     ADD ${JAR_FILE} app.jar
@@ -76,49 +76,3 @@ Sample RESTful API/Web Services
 ```shell
 docker build --no-cache -t <image_name>:<version> -f ./path/to/Dockerfile .
 ```
-- Push docker image into docker registry server
-```shell
-#login
-docker login docker.fortna.com
-#account: admin/fortnaRH11
-
-#Tag the docker image with the registry name:
-docker build --no-cache -t docker.fortna.com/<image_name>:<version> -f ./path/to/Dockerfile .
-
-#Push the image
-docker push docker.fortna.com/<image_name>:<version>
-```
-
-## 2. How to run
-### 2.1. Pre-requisite:
-Deploy & setup Postgres DB: https://fortna.atlassian.net/wiki/spaces/WQC/pages/804192291/Deploy+PostgresQL+singleton+mode
-
-### 2.2 Deploy & run locally
-```shell
- docker run -it --rm --name=<container_name> <image_name>:<version>
-```
-
-### 2.3 Deploy & run via docker-compose
-- Create docker compose file:
-```dockerfile
-version: '3.4'
-
-services:
-  restservicesample:
-    image: restservice-sample-local:0.0.3.4
-    ports:
-      - "9999:9999"
-    networks:
-      fortnawes:
-        aliases:
-          - restservicesample.fortnawes.com
-    deploy:
-      mode: replicated
-      replicas: 1
-
-networks:
-  fortnawes:
-    external: true
-```
-- Notes:
-  + Both container should be in same network, so that they can connect together via the network alias name.
